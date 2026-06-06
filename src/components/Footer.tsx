@@ -12,9 +12,15 @@ export default function Footer() {
           {/* Brand & Description */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-4 mb-6">
-              <img src="/logo-kampus.png" alt="Logo Kampus" className="w-14 h-14 object-contain bg-white rounded-full border-2 border-border p-1" />
-              <img src="/logo-trenggalek.png" alt="Logo Trenggalek" className="w-14 h-14 object-contain bg-white rounded-full border-2 border-border p-1" />
-              <img src="/logo-kkn.png" alt="Logo KKN" className="w-16 h-16 object-contain bg-white rounded-full border-2 border-border p-1" />
+              <a href="https://yudharta.ac.id/id/" target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-110 hover:-translate-y-1">
+                <img src="/logo-kampus.png" alt="Logo Kampus" className="w-14 h-14 object-contain bg-white rounded-full border-2 border-border p-1" />
+              </a>
+              <a href="https://kedunglurah-pogalan.trenggalekkab.go.id/first" target="_blank" rel="noopener noreferrer" className="transition-transform hover:scale-110 hover:-translate-y-1">
+                <img src="/logo-trenggalek.png" alt="Logo Trenggalek" className="w-14 h-14 object-contain bg-white rounded-full border-2 border-border p-1" />
+              </a>
+              <Link href="/" className="transition-transform hover:scale-110 hover:-translate-y-1">
+                <img src="/logo-kkn.png" alt="Logo KKN" className="w-16 h-16 object-contain bg-white rounded-full border-2 border-border p-1" />
+              </Link>
             </div>
             <h3 className="font-display font-bold text-2xl text-foreground mb-4">
               KKN Kelompok <span className="text-primary">22</span>

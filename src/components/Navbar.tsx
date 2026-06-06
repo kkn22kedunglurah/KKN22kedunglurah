@@ -48,17 +48,23 @@ export default function Navbar() {
     >
       <div className="container-custom flex justify-between items-center">
         {/* Logo Area */}
-        <Link href="/" className="flex items-center gap-3 z-50">
-          <div className="flex items-center -space-x-2">
-            <img src="/logo-kampus.png" alt="Logo Kampus" className="w-10 h-10 md:w-12 md:h-12 object-contain bg-white rounded-full border-2 border-background shadow-sm" />
-            <img src="/logo-trenggalek.png" alt="Logo Trenggalek" className="w-10 h-10 md:w-12 md:h-12 object-contain bg-white rounded-full border-2 border-background shadow-sm z-10" />
-            <img src="/logo-kkn.png" alt="Logo KKN 22" className="w-11 h-11 md:w-14 md:h-14 object-contain bg-white rounded-full border-2 border-background shadow-md z-20" />
+        <div className="flex items-center gap-3 z-50">
+          <div className="flex items-center -space-x-2 hover:-space-x-0 transition-all duration-300">
+            <a href="https://yudharta.ac.id/id/" target="_blank" rel="noopener noreferrer" className="z-0 hover:z-30 transition-transform hover:scale-110">
+              <img src="/logo-kampus.png" alt="Logo Kampus" className="w-10 h-10 md:w-12 md:h-12 object-contain bg-white rounded-full border-2 border-background shadow-sm" />
+            </a>
+            <a href="https://kedunglurah-pogalan.trenggalekkab.go.id/first" target="_blank" rel="noopener noreferrer" className="z-10 hover:z-30 transition-transform hover:scale-110">
+              <img src="/logo-trenggalek.png" alt="Logo Trenggalek" className="w-10 h-10 md:w-12 md:h-12 object-contain bg-white rounded-full border-2 border-background shadow-sm" />
+            </a>
+            <Link href="/" className="z-20 hover:z-30 transition-transform hover:scale-110">
+              <img src="/logo-kkn.png" alt="Logo KKN 22" className="w-11 h-11 md:w-14 md:h-14 object-contain bg-white rounded-full border-2 border-background shadow-md" />
+            </Link>
           </div>
-          <div className="hidden sm:block">
+          <Link href="/" className="hidden sm:block">
             <span className="font-display font-bold text-xl md:text-2xl text-foreground block leading-none">KKN <span className="text-primary">22</span></span>
             <span className="text-xs text-muted-foreground font-medium">Kedunglurah</span>
-          </div>
-        </Link>
+          </Link>
+        </div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
