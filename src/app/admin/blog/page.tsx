@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiLoader } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiLoader, FiUpload } from "react-icons/fi";
 
 interface Blog {
   id: string; slug: string; title: string; content: string; cover_image_url: string; created_at: string;
@@ -18,6 +18,7 @@ export default function AdminBlogPage() {
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [uploading, setUploading] = useState(false);
 
   const fetchBlogs = async () => {
     setLoading(true);
@@ -27,6 +28,22 @@ export default function AdminBlogPage() {
   };
 
   useEffect(() => { fetchBlogs(); }, []);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const fileExt = file.name.split(".").pop();
+    const fileName = `blog_${Date.now()}.${fileExt}`;
+    const { error } = await supabase.storage.from("gallery").upload(fileName, file);
+    if (error) {
+      alert(`Gagal mengupload gambar: ${error.message}\nPastikan Bucket "gallery" sudah dibuat dan Policy sudah diset ke public.`);
+    } else {
+      const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(fileName);
+      setForm({ ...form, cover_image_url: urlData.publicUrl });
+    }
+    setUploading(false);
+  };
 
   const generateSlug = (title: string) => {
     return title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
@@ -81,9 +98,19 @@ export default function AdminBlogPage() {
                 <input value={form.slug} onChange={(e) => setForm({...form, slug: e.target.value})} placeholder="otomatis-dari-judul" className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50" />
               </div>
               <div>
-                <label className="text-sm font-bold text-foreground block mb-1">URL Gambar Cover</label>
+                <label className="text-sm font-bold text-foreground block mb-1">Upload Gambar Cover</label>
+                <div className="relative mb-2">
+                  <input type="file" accept="image/*" onChange={handleFileUpload} className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary file:text-primary-foreground" />
+                  {uploading && <div className="absolute right-4 top-1/2 -translate-y-1/2"><FiLoader className="animate-spin text-primary" size={18} /></div>}
+                </div>
+                <label className="text-sm font-bold text-foreground block mb-1">Atau Tempelkan URL Gambar</label>
                 <input value={form.cover_image_url} onChange={(e) => setForm({...form, cover_image_url: e.target.value})} placeholder="https://..." className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50" />
               </div>
+              {form.cover_image_url && (
+                <div className="rounded-xl overflow-hidden border border-border mt-2">
+                  <img src={form.cover_image_url} alt="Preview" className="w-full h-48 object-cover" />
+                </div>
+              )}
               <div>
                 <label className="text-sm font-bold text-foreground block mb-1">Konten (Format Markdown) *</label>
                 <textarea value={form.content} onChange={(e) => setForm({...form, content: e.target.value})} required rows={12} placeholder="# Judul&#10;&#10;Tulis konten menggunakan format Markdown di sini..." className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none font-mono text-sm" />

@@ -36,7 +36,9 @@ export default function AdminGalleryPage() {
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}.${fileExt}`;
     const { error } = await supabase.storage.from("gallery").upload(fileName, file);
-    if (!error) {
+    if (error) {
+      alert(`Gagal mengupload gambar: ${error.message}\nPastikan Bucket "gallery" sudah dibuat dan Policy sudah diset ke public.`);
+    } else {
       const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(fileName);
       setForm({ ...form, image_url: urlData.publicUrl });
     }
